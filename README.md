@@ -13,7 +13,7 @@ TitanApi é um gerador de API dinâmico construído com Flask. Ele oferece uma m
 
 1. Clone este repositório:
 ```bash
-git clone [link_do_seu_repositório](https://github.com/Polvere01/TitanApi)
+git clone https://github.com/Polvere01/TitanApi
 ```
 
 2. Navegue até o diretório do projeto e instale as dependências:
