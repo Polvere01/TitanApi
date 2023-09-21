@@ -29,24 +29,26 @@ class FileStorage(Storage):
             return []
 
 class Endpoint:
-    def __init__(self, path, method, response_data):
+    def __init__(self, path, method, response_data, status_code=200):
         self.path = path
         self.method = method
         self.response_data = response_data
+        self.status_code = status_code
 
     def handle_request(self):
-        return jsonify(self.response_data)
+        return jsonify(self.response_data), self.status_code
 
     def to_dict(self):
         return {
             "path": self.path,
             "method": self.method,
-            "response_data": self.response_data
+            "response_data": self.response_data,
+            "status_code": self.status_code
         }
 
     @classmethod
     def from_dict(cls, data):
-        return cls(data["path"], data["method"], data["response_data"])
+        return cls(data["path"], data["method"], data["response_data"], data.get("status_code", 200))
 
 class EndpointManager:
     def __init__(self, storage):
@@ -106,8 +108,9 @@ class CLI:
             method = input("Digite o tipo do endpoint (GET ou POST): ").upper()
             message = input("Digite a mensagem de saída (ex: {\"id\": \"1\"}): ")
             response_data = json.loads(message)
+            status_code = int(input("Digite o código de status HTTP para a resposta (ex: 200, 201): "))
 
-            endpoint = Endpoint(path, method, response_data)
+            endpoint = Endpoint(path, method, response_data, status_code)
             self.manager.add_endpoint(endpoint)
 
     def delete_endpoint(self):
